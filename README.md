@@ -2,22 +2,13 @@
 
 A personal project implementing an automatic carrier routing system for a 4-way conveyor interchange, built in **TwinCAT 3** using **Sequential Function Chart (SFC)** with actions written in **Structured Text (ST)**, as per IEC 61131-3.
 
+![Conveyor interchange layout](docs/conveyor_interchange_system_layout.svg)![Conveyor interchange layout](docs/conveyor_interchange_system_layout.svg)
 ---
 
 ## System Overview
 
 A cross-shaped conveyor interchange routes carriers between four destinations (3, 6, 9, 12 — arranged like clock positions). Two **Lift-Transfer-Units (LTUs)** flanking the center crossing switch carriers between two physical track levels.
 
-```
-              Destination 12
-                    |
-        Conv_6to12 (↑) | Conv_12to6 (↓)   ← Green lower track (vertical)
-                    |
-  Dest 9 ←──[LTU_9]──[CROSSING]──[LTU_3]──→ Dest 3
-     Conv_3to9 (←)     |      Conv_9to3 (→) ← Orange upper track (horizontal)
-                    |
-              Destination 6
-```
 
 ### Hardware Components
 
