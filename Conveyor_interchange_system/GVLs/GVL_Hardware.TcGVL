@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <GVL Name="GVL_Hardware" Id="{bd246400-2a18-4231-a522-9818ae05f481}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+VAR_GLOBAL
+	
+	// 4 conveyors (named by direction)
+	stConv_12to6	: ST_Conveyor;
+	stConv_6to12	: ST_Conveyor;
+	stConv_3to9		: ST_Conveyor;
+	stConv_9to3		: ST_Conveyor;
+	
+	// 2 LTUs on each side of the crossing
+	stLTU_9		: ST_LTU;		//LTU in the 9 side
+	stLTU_3		: ST_LTU;		//LTU in the 9 side
+	
+	//  2 stoppers
+	stStopper_Blue   : ST_Stopper;
+	stStopper_Purple : ST_Stopper;
+	
+	// for the Reader dummy function
+	nReaderCounter : INT;
+	
+	// Reader result
+	nDestination : INT;			// holding the targt destination value (3,6,9,12) 
+	
+END_VAR]]></Declaration>
+  </GVL>
+</TcPlcObject>

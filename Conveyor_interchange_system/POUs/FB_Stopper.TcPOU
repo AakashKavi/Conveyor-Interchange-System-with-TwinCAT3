@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_Stopper" Id="{2adf7977-f1d5-4ae6-a6e1-0987ae574a3f}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Stopper
+VAR_INPUT
+    bRelease        : BOOL;    // TRUE = let carrier pass
+END_VAR
+VAR_OUTPUT
+    bOccupied       : BOOL;    // TRUE = carrier is waiting
+END_VAR
+VAR_IN_OUT
+    stHW            : ST_Stopper;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[//TRUE = stopper down = carrier passes
+//FALSE = stopper up = carrier blocked
+
+stHW.bStopperDown := bRelease;
+
+//The occupancy sensor
+ bOccupied := stHW.bStopperOccupied; 
+]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

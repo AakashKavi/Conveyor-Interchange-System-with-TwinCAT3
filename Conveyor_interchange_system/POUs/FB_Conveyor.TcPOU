@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_Conveyor" Id="{39004fd1-d4d3-4d0a-ad0d-486ca0dacac7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_Conveyor
+VAR_INPUT
+    bEnable         : BOOL;    // caller says: run this conveyor
+END_VAR
+VAR_OUTPUT
+    bRunning        : BOOL;    // conveyor is actually moving
+    bFault          : BOOL;    // something is wrong
+END_VAR
+VAR_IN_OUT
+    stHW            : ST_Conveyor;  // reference to hardware struct
+END_VAR]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// Command the motor when enabled and no fault
+stHW.bMotorOn := bEnable AND stHW.bMotorOK;
+
+// Running feedback directly from hardware
+bRunning := stHW.bIsRunning;
+
+// Fault: we commanded it ON but it's not running
+bFault := bEnable AND NOT stHW.bIsRunning AND stHW.bMotorOK;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

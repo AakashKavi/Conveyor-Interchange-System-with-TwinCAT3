@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="PRG_Simulation" Id="{67cd4211-24c6-4ff4-9cb9-22f2c40e426b}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM PRG_Simulation
+VAR
+	tCarrierDelay   : TON;    // timer to simulate carrier travel time
+    tLTUDelay       : TON;    // timer to simulate LTU movement time
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// --- Simulate carrier arriving at stopper ---
+// Auto-trigger a new carrier every 3 seconds after previous cycle done
+tCarrierDelay(IN := NOT GVL_Hardware.stStopper_Blue.bStopperOccupied, PT := T#3S);
+IF tCarrierDelay.Q THEN
+    GVL_Hardware.stStopper_Blue.bStopperOccupied := TRUE;
+END_IF
+
+// --- Simulate LTUs always free ---
+GVL_Hardware.stLTU_9.bLightBarrier := TRUE;
+GVL_Hardware.stLTU_3.bLightBarrier := TRUE;
+
+// --- Simulate conveyor running feedback ---
+GVL_Hardware.stConv_12to6.bIsRunning := GVL_Hardware.stConv_12to6.bMotorOn;
+GVL_Hardware.stConv_6to12.bIsRunning := GVL_Hardware.stConv_6to12.bMotorOn;
+GVL_Hardware.stConv_3to9.bIsRunning  := GVL_Hardware.stConv_3to9.bMotorOn;
+GVL_Hardware.stConv_9to3.bIsRunning  := GVL_Hardware.stConv_9to3.bMotorOn;
+
+// --- Simulate motor OK always true ---
+GVL_Hardware.stConv_12to6.bMotorOK := TRUE;
+GVL_Hardware.stConv_6to12.bMotorOK := TRUE;
+GVL_Hardware.stConv_3to9.bMotorOK  := TRUE;
+GVL_Hardware.stConv_9to3.bMotorOK  := TRUE;
+GVL_Hardware.stLTU_9.bTransferMotorOK := TRUE;
+GVL_Hardware.stLTU_3.bTransferMotorOK := TRUE;
+
+// --- Simulate carrier passing stopper ---
+// Once a conveyor runs, carrier leaves after 2 seconds
+tLTUDelay(IN := GVL_Hardware.stConv_12to6.bMotorOn
+              OR GVL_Hardware.stConv_6to12.bMotorOn
+              OR GVL_Hardware.stConv_3to9.bMotorOn
+              OR GVL_Hardware.stConv_9to3.bMotorOn, PT := T#2S);
+IF tLTUDelay.Q THEN
+    GVL_Hardware.stStopper_Blue.bStopperOccupied := FALSE;
+END_IF
+
+// --- Simulate LTU position feedback ---
+// Bottom is default
+GVL_Hardware.stLTU_9.bAtMiddle := TRUE;
+GVL_Hardware.stLTU_3.bAtMiddle := TRUE;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

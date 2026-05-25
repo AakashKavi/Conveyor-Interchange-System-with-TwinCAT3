@@ -1,0 +1,26 @@
+# TwinCAT 3 build artifacts and generated files
+_Boot/
+_CompileInfo/
+_Libraries/
+_ModuleInstances/
+
+# Visual Studio
+.vs/
+
+# Backup files created by TwinCAT
+*.bak
+*.tclrs
+
+# Compiled PLC application (regenerated on build)
+*.app
+*.compileinfo
+*.tmc
+*.tpzip
+*.tszip
+*.tizip
+
+# Boot and config exports
+CurrentConfig/
+CurrentConfig.xml
+CurrentConfig.tszip
+TargetDescription.xml

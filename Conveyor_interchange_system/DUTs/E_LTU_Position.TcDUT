@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <DUT Name="E_LTU_Position" Id="{3e9acfcc-a46b-46ac-91de-92575db1553f}">
+    <Declaration><![CDATA[{attribute 'qualified_only'}
+{attribute 'strict'}
+{attribute 'to_string'}
+TYPE E_LTU_Position :
+(
+	eMIDDLE := 0,		// default resting position
+	eBOTTOM	:= 1, 		// green track level
+	eTOP	:= 2		// orange track level
+);
+END_TYPE
+]]></Declaration>
+  </DUT>
+</TcPlcObject>

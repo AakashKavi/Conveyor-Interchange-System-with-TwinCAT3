@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FC_ReadDestination" Id="{43d593bd-cbff-4f5b-a368-a0c02454e5c7}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION FC_ReadDestination : INT
+//This is a dummy reader function which generates random paths. 
+//Logic: To generate the numbers 3,6,9,12, I have taken the modulus of 4 on random numbers.  
+VAR_INPUT
+END_VAR
+VAR
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[GVL_Hardware.nReaderCounter := GVL_Hardware.nReaderCounter + 1;
+
+CASE GVL_Hardware.nReaderCounter MOD 4 OF
+    0 : FC_ReadDestination := 3;
+    1 : FC_ReadDestination := 6;
+    2 : FC_ReadDestination := 9;
+    3 : FC_ReadDestination := 12;
+END_CASE]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

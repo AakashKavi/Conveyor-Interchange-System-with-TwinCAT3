@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="MAIN" Id="{03d01ddd-0e0c-483d-b310-eb05f7c9a427}" SpecialFunc="None">
+    <Declaration><![CDATA[PROGRAM MAIN
+VAR
+	fbConv_12to6     : FB_Conveyor;
+    fbConv_6to12     : FB_Conveyor;
+    fbConv_3to9      : FB_Conveyor;
+    fbConv_9to3      : FB_Conveyor;
+
+    fbLTU_9side      : FB_LTU;
+    fbLTU_3side      : FB_LTU;
+
+    fbStopper_Blue   : FB_Stopper;
+    fbStopper_Purple : FB_Stopper;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[(*fbConv_12to6(bEnable := FALSE, stHW := GVL_Hardware.stConv_12to6);
+fbConv_6to12(bEnable := FALSE, stHW := GVL_Hardware.stConv_6to12);
+fbConv_3to9 (bEnable := FALSE, stHW := GVL_Hardware.stConv_3to9);
+fbConv_9to3 (bEnable := FALSE, stHW := GVL_Hardware.stConv_9to3);
+
+fbLTU_9side(eCmd := E_LTU_Position.eMIDDLE, bTransferEnable := FALSE, stHW := GVL_Hardware.stLTU_9);
+fbLTU_3side(eCmd := E_LTU_Position.eMIDDLE, bTransferEnable := FALSE, stHW := GVL_Hardware.stLTU_3);
+
+fbStopper_Blue  (bRelease := FALSE, stHW := GVL_Hardware.stStopper_Blue);
+fbStopper_Purple(bRelease := FALSE, stHW := GVL_Hardware.stStopper_Purple);*)
+
+
+PRG_Simulation();
+
+//Calling the routing program
+SFC_Routing();]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>

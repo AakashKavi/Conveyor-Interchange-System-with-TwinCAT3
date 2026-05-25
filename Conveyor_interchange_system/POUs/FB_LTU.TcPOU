@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<TcPlcObject Version="1.1.0.1" ProductVersion="3.1.4026.18">
+  <POU Name="FB_LTU" Id="{0c772ef5-20d7-42be-9a4d-c31753086d24}" SpecialFunc="None">
+    <Declaration><![CDATA[FUNCTION_BLOCK FB_LTU
+VAR_INPUT
+    eCmd            : E_LTU_Position;  // caller commands a position
+    bTransferEnable : BOOL;            // run transfer motor (only valid at top)
+END_VAR
+VAR_OUTPUT
+    bAtPosition     : BOOL;   // TRUE = cylinder reached commanded position
+    bFault          : BOOL;   // TRUE = transfer motor fault
+    bIsFree         : BOOL;   // TRUE = no carrier on LTU
+END_VAR
+VAR_IN_OUT
+    stHW            : ST_LTU;
+END_VAR
+]]></Declaration>
+    <Implementation>
+      <ST><![CDATA[// --- Cylinder control ---
+// Drive outputs based on commanded position
+stHW.bCmdBottom := (eCmd = E_LTU_Position.eBOTTOM);
+stHW.bCmdTop    := (eCmd = E_LTU_Position.eTOP);
+// Middle: both outputs FALSE (cylinder retracts to middle naturally)
+
+// --- Position reached feedback ---
+CASE eCmd OF
+    E_LTU_Position.eMIDDLE : bAtPosition := stHW.bAtMiddle;
+    E_LTU_Position.eBOTTOM : bAtPosition := stHW.bAtBottom;
+    E_LTU_Position.eTOP    : bAtPosition := stHW.bAtTop;
+END_CASE
+
+// --- Transfer motor (only meaningful when at top) ---
+stHW.bTransferMotorOn := bTransferEnable 
+                         AND (eCmd = E_LTU_Position.eTOP) 
+                         AND stHW.bAtTop
+                         AND stHW.bTransferMotorOK;
+
+// --- Outputs ---
+bIsFree := stHW.bLightBarrier;
+bFault  := bTransferEnable AND stHW.bAtTop AND NOT stHW.bTransferMotorRunning
+                           AND stHW.bTransferMotorOK;]]></ST>
+    </Implementation>
+  </POU>
+</TcPlcObject>
