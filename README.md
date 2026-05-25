@@ -2,7 +2,7 @@
 
 A personal project implementing an automatic carrier routing system for a 4-way conveyor interchange, built in **TwinCAT 3** using **Sequential Function Chart (SFC)** with actions written in **Structured Text (ST)**, as per IEC 61131-3.
 
-![Conveyor interchange layout](docs/conveyor_interchange_system_layout.svg)
+![Conveyor interchange layout](docs/conveyor_interchange_layout_v3.svg)
 ---
 
 ## System Overview
